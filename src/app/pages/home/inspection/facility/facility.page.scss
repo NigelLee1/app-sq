@@ -1,0 +1,154 @@
+ion-toolbar {
+  --padding-top: 1.8rem;
+  --padding-bottom: .5rem;
+  --color: white;
+  --background: rgba(0, 0, 0, 0);
+  --background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+.ios ion-toolbar {
+  --padding-top: 1.9rem;
+  --padding-bottom: .2rem;
+}
+
+ion-header {
+  background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-title {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+.ios ion-title {
+  padding-top: 1.6rem;
+}
+
+ion-button {
+  font-size: 1.2rem;
+}
+
+ion-icon {
+  color: white;
+}
+
+ion-chip {
+  border-radius: 5px;
+}
+
+ion-item {
+  font-size: 1rem;
+  color: #86888f;
+  --highlight-color-focused: #10dc60;
+
+  ion-label {
+    font-weight: bold;
+  }
+}
+
+.change {
+  font-size: 14px;
+}
+
+.add {
+  width: 60px;
+  height: 60px;
+  border: dashed 1px #a2a4ab;
+  border-radius: 5px;
+
+  ion-icon {
+    color: #a2a4ab;
+  }
+}
+
+.pic {
+  width: 60px;
+  height: 60px;
+  border: solid 1px #a2a4ab;
+  border-radius: 5px;
+  margin-right: 10px;
+
+  ion-icon {
+    color: #a2a4ab;
+  }
+
+  --padding-start: 0;
+  --padding-top: 0;
+  --padding-end: 0;
+  --padding-bottom: 0;
+}
+
+ion-col span {
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 3px;
+  top: -23px;
+  color: red;
+  font-size: 20px;
+  background: white;
+  border-radius: 20px;
+  padding: 0
+}
+
+.video-close {
+  position: absolute;
+  right: -7px;
+  top: -5px;
+  color: red;
+  font-size: 20px;
+  background: white;
+  border-radius: 20px;
+  padding: 0
+}
+
+video {
+  margin-top: 5px;
+  width: calc(100%);;
+  max-height: 150px;
+  border: solid 1px #a2a4ab;
+}
+
+.video {
+  ion-button {
+    width: calc(100% - 2px);
+    height: 150px;
+  }
+
+  ion-spinner {
+    color: white;
+    position: absolute;
+    z-index: 1;
+    left: calc(47.5% - (1rem / 2));
+    top: 59px;
+  }
+
+  .warn {
+    color: red;
+    font-size: 50px;
+    position: absolute;
+    left: calc(50% - 25px);
+    z-index: 1;
+    top: 48px;
+  }
+}
+
+.upload {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  background-color: rgba(0, 0, 0, .5);
+
+  ion-spinner {
+    top: 14px;
+  }
+
+  ion-icon {
+    color: red;
+    font-size: 20px;
+    margin-top: 18px;
+  }
+}

@@ -1,0 +1,185 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+app-unfinished, app-finish, app-not-repaired, app-repaired, ion-infinite-scroll-content {
+  background: #ededed;
+}
+
+.unfinished, .finished, .repaired, .not-repaired {
+  .refresher-refreshing-icon, .refresher-pulling-icon, ion-spinner {
+    color: #86d1fc;
+  }
+
+  .refresher-pulling-text, .refresher-refreshing-text, .infinite-loading-text {
+    color: #86d1fc;
+    font-size: 12px;
+  }
+}
+
+.detail-popover {
+  .popover-content {
+    --width: 200px;
+  }
+}
+
+.marker {
+  div {
+    width: 30px;
+    height: 30px;
+    margin-left: -9px;
+    margin-top: -9px;
+  }
+
+  img {
+    margin-left: -5px;
+    margin-top: .6px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.pointer {
+  div {
+    width: 30px;
+    height: 30px;
+    margin-left: -8px;
+    margin-top: -25px;
+  }
+
+  img {
+    margin-left: -5px;
+    margin-top: -5px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.empty {
+  height: 90px;
+  width: 100%;
+  text-align: center;
+  padding-top: 10px;
+  font-size: .8rem;
+
+  img {
+    width: 70px;
+  }
+
+  div {
+    padding-top: 5px;
+    color: #86888f;
+  }
+}
+
+.ripple {
+  box-sizing: border-box;
+  position: relative;
+}
+
+.ripple:before {
+  animation: ripple 2s ease-out infinite;
+  border: solid 2px #61bbfc;
+  border-radius: 2em;
+  bottom: 0;
+  box-sizing: border-box;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.ripple:after {
+  animation: ripple 2s 1s ease-out infinite;
+  border: solid 2px #61bbfc;
+  border-radius: 2em;
+  bottom: 0;
+  box-sizing: border-box;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+@keyframes ripple {
+  0% {
+    opacity: .25;
+  }
+  100% {
+    border-radius: 2em;
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+
+.jump {
+  position: absolute;
+  animation: .8s arrow infinite ease;
+}
+
+@keyframes arrow {
+  0%, 100% {
+    top: -10px;
+  }
+  50% {
+    top: 0;
+  }
+}
+
+.loader {
+  border-radius: 50%;
+  -webkit-animation: 1s loader linear infinite;
+  animation: 1s loader linear infinite;
+}
+
+.choose-content {
+  .leaflet-bottom, .map-location {
+    bottom: 60px;
+  }
+}
+
+ion-content {
+  --background: #ededed;
+}
+
+.device {
+  margin-left: -15px !important;
+  div {
+    width: 32px;
+    height: 32px;
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 3px !important;
+}

@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="nav.back()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+            <div>任务详情</div>
+            <div class="subtext">{{repair?.id}}</div>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="showSelectLayer($event)">
+                <ion-icon name="logo-buffer"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <app-map showFullScreen="true" (mapInitialized)="mapInitialized($event)" [isSatellite]="isSatellite" (fullScreenChange)="fullScreenChange($event)" [isFullScreen]="false"></app-map>
+</ion-content>
+<ion-footer [hidden]="isFullScreen">
+    <ion-grid style="padding: 0">
+        <div class="ion-text-center sub-title">
+            维修清单
+        </div>
+        <ion-list style="max-height: 200px; overflow: auto; padding-top: 0">
+            <ion-item *ngFor="let item of faultList" button="true" (click)="showFault(item)">
+                <ion-label>{{item.fault}}</ion-label>
+                <ion-note slot="end" [color]="item.isCom ? 'primary' : 'danger'">{{item.isCom ? '已处理' : '未处理'}}</ion-note>
+            </ion-item>
+        </ion-list>
+    </ion-grid>
+    <ion-row *ngIf="enableFinish && !isView">
+        <ion-col class="ion-align-self-center">
+            <ion-button class="finish" color="success" size="small" (click)="submit()">结束任务</ion-button>
+        </ion-col>
+    </ion-row>
+</ion-footer>

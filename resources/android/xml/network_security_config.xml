@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">is.autonavi.com</domain>
+        <domain includeSubdomains="true">amap.com</domain>
+        <domain includeSubdomains="true">google.cn</domain>
+        <domain includeSubdomains="true">hj.akest.cn</domain>
+        <domain includeSubdomains="true">sq.akest.cn</domain>
+        <domain includeSubdomains="true">183.240.147.90</domain>
+        <domain includeSubdomains="true">183.240.147.85</domain>
+        <domain includeSubdomains="true">120.237.79.85</domain>
+        <domain includeSubdomains="true">192.168.1.154</domain>
+        <domain includeSubdomains="true">120.79.139.65</domain>
+    </domain-config>
+</network-security-config>

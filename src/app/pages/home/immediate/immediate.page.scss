@@ -1,0 +1,48 @@
+ion-toolbar {
+  --color: white;
+  --background: rgba(0, 0, 0, 0);
+  --background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-header {
+  padding-top: 1rem;
+  background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-title {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+ion-button {
+  font-size: 1.2rem;
+}
+
+ion-list {
+  max-height: 150px;
+  overflow: auto;
+  padding: 0;
+
+  ion-avatar {
+    margin: 0 10px;
+  }
+
+  ion-item {
+    font-size: 13px;
+    --padding-start: 0;
+  }
+}
+
+.ios ion-list {
+  margin-bottom: 0;
+}
+
+.ios {
+  ion-button {
+    color: white;
+  }
+
+  .create-form {
+    height: 2.5rem;
+  }
+}

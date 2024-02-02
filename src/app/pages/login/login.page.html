@@ -1,0 +1,15 @@
+<ion-content>
+  <div class="bg">
+    <form class="form" [formGroup]="loginForm">
+      <ion-row style="font-size: 14px; font-weight: bold;">
+        账号
+      </ion-row>
+      <ion-input formControlName="name" class="mobile" placeholder="请输入账号"></ion-input>
+      <ion-row style="font-size: 14px; font-weight: bold" class="password">
+        密码
+      </ion-row>
+      <ion-input formControlName="password" type="password" placeholder="请输入密码" (keydown)="login($event)"></ion-input>
+      <ion-button class="login-btn" (click)="login()">登&nbsp;&nbsp;&nbsp;录</ion-button>
+    </form>
+  </div>
+</ion-content>

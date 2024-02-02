@@ -1,0 +1,65 @@
+ion-content {
+  width: 100%;
+}
+
+.bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-image: url("/assets/img/login.png");
+}
+
+ion-img {
+  height: 5rem;
+}
+
+.icon {
+  padding-top: 3rem;
+}
+
+.label {
+  font-size: 1.1rem;
+  color: white;
+}
+
+.form {
+  width: 100%;
+  top: 40%;
+  padding: 0 18px 10px;
+  position: absolute;
+  background: transparent;
+}
+
+ion-input {
+  color: #5c97f3;
+  width: 100%;
+  font-size: 1em;
+  padding-bottom: .1em;
+  --padding-start: 0;
+  --placeholder-color: #aeaeae;
+  border-bottom: .05em solid #bfbfbf;
+}
+
+.password {
+  margin-top: 1.5em;
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 60px;
+  font-size: 18px;
+  --background: #55c5ff;
+  --border-radius: 30px;
+  --background-activated: #7dddff;
+  --background-focused: #7dddff;
+  --background-hover: #55c5ff;
+}
+
+ion-row {
+  color: #696969;
+  font-family: "Adobe Heiti Std", serif;
+}
+

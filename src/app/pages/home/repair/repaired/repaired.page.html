@@ -1,0 +1,32 @@
+<ion-content class="repaired">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingText="下拉即可刷新" refreshingText="正在刷新"></ion-refresher-content>
+  </ion-refresher>
+  <ion-list>
+    <ion-item *ngFor="let item of repairList" button="true" (click)="navController.navigateForward('/repair/detail/' + item.id + '?view=true')"
+              style="--inner-padding-end: 5px; --padding-start: 5px">
+      <ion-avatar>
+        <img src="/assets/icon/repaired.svg">
+      </ion-avatar>
+      <ion-label>
+        {{item.no}}<br>
+        设施类型: {{item.type}}<br>
+        接收时间: {{item.createTime| date: 'yyyy-MM-dd HH:mm'}}<br>
+        完成时间: {{item.finishTime| date: 'yyyy-MM-dd HH:mm'}}
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="repairList.length === 0">
+      <div class="empty">
+        <img src="/assets/icon/no-data.svg"/>
+        <div>暂无数据</div>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="数据加载中...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div style="height: 4.5rem"></div>
+</ion-content>

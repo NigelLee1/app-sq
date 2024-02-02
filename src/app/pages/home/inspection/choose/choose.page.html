@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="modalCtrl.dismiss()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+            {{openType === 'locate' ? '调整定位' : '获取' + taskForm.controls.type.value + '编号'}}
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="showSelectLayer($event)">
+                <ion-icon name="logo-buffer"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="choose-content">
+    <app-map (mapInitialized)="mapInitialized($event)" [isSatellite]="isSatellite" [initLocate]="true" [showFullScreen]="openType === 'change'" [isFullScreen]="isFullScreen" (fullScreenChange)="fullScreenChange($event)"></app-map>
+    <ion-fab *ngIf="openType === 'locate'" vertical="start" horizontal="start" slot="fixed">
+        <ion-row style="width: 100vw; font-size: 16px; color: #86888f; font-weight: bold;">
+            <ion-col>经度：{{mapToolService.formatLocateStr(locate.lng, 6)}}</ion-col>
+            <ion-col>纬度：{{mapToolService.formatLocateStr(locate.lat, 6)}}</ion-col>
+        </ion-row>
+    </ion-fab>
+    <ion-fab vertical="center" horizontal="center" slot="fixed">
+        <img src="assets/icon/mark.svg" class="mark">
+    </ion-fab>
+    <ion-fab *ngIf="openType === 'change'" vertical="start" horizontal="end" slot="fixed">
+        <ion-button color="secondary" class="rang" (click)="queryRang()">
+            10米范围内设施
+            <ion-spinner name="circles" *ngIf="rangLoading"></ion-spinner>
+        </ion-button>
+    </ion-fab>
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-button class="submit" (click)="submit()" [disabled]="openType === 'change' && deviceNo === undefined">确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定</ion-button>
+    </ion-fab>
+</ion-content>
+
+<ion-footer [hidden]="isFullScreen">
+    <ion-item style="--padding-start: 0">
+        <ion-label class="ion-text-center" style="font-weight: bold">
+            附近设施
+        </ion-label>
+    </ion-item>
+    <ion-list style="--padding-start: 0; max-height: 200px; padding-top: 0; padding-bottom: 0; overflow: auto">
+        <ion-radio-group [(ngModel)]="deviceNo">
+            <ion-item *ngFor="let item of rangList" button="true" (click)="markRoute(item)">
+                <ion-avatar slot="start">
+                    <img src="assets/icon/bug.svg">
+                </ion-avatar>
+                <ion-label>
+                    <h2>{{item.properties.ID}}</h2>
+                    <p>{{item.properties.ROAD_NAME}}</p>
+                </ion-label>
+                <ion-radio slot="end" [value]="item.properties.ID"></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+        <ion-item *ngIf="rangList.length === 0"  style="--padding-start: 0">
+            <div class="empty">
+                <img src="/assets/icon/no-data.svg"/>
+                <div>暂无数据</div>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-footer>

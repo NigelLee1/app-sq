@@ -1,0 +1,76 @@
+ion-toolbar {
+  --color: white;
+  --background: rgba(0,0,0,0);
+}
+
+ion-header {
+  --background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-header {
+  background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-title {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+ion-button {
+  font-size: 1.2rem;
+}
+
+ion-tabs {
+  z-index: 100;
+}
+
+ion-tab-bar {
+  --border: 0;
+  background: transparent;
+  height: 2.5rem;
+  padding-bottom: 10px;
+}
+
+.ios ion-tab-bar {
+  height: 2.3rem;
+}
+
+ion-tab-button {
+  --color-selected: white;
+  background: transparent;
+}
+
+.tab-selected {
+  border: 0 solid;
+  border-bottom-width: 2px;
+}
+
+ion-label {
+  color: white;
+  font-size: 1rem;
+}
+
+.md ion-toolbar {
+  padding-top: 1rem
+}
+
+.ios ion-toolbar {
+  padding-top: 1.7rem
+}
+
+.ios .title-ios {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ios ion-toolbar {
+  padding-top: 1rem;
+
+  ion-title {
+    font-size: 1.3rem;
+  }
+}
+
+ion-segment-button {
+  --color-checked: white;
+}

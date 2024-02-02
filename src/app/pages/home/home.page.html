@@ -1,0 +1,57 @@
+<ion-header>
+    <div class="message">
+        <div>宿豫区智慧水务APP</div>
+        <div>欢迎回来，{{ tokenService.getUser().realName }}！</div>
+        <div *ngIf="(platform.is('android') || platform.is('ios')) && version">
+            系统版本：{{ version }}
+            <a *ngIf="version" style="font-size: 14px; color: #FF3300; margin-left: 5px; text-decoration: underline;" (click)="checkUpdate()">检查更新</a>
+        </div>
+    </div>
+</ion-header>
+<ion-content>
+    <div class="content">
+        <h5>
+            主应用
+        </h5>
+        <div class="items">
+            <ion-row>
+                <ion-button class="item" (click)="nav.navigateForward('/home/inspection')">
+                    <div>
+                        <ion-badge id="badge" style="position: absolute; right: 6px; top: 5px; border-radius: 10px; --background: #FF3300; z-index: 1; padding-top: 4px; padding-left: 7px; padding-right: 7px;"></ion-badge>
+                        <ion-icon name="inspection"></ion-icon>
+                        <div class="btn-text">巡查任务</div>
+                    </div>
+                </ion-button>
+                <ion-button class="item right" style="margin-left: 1rem"  (click)="nav.navigateForward('/home/repair')">
+                    <div>
+                        <ion-icon name="repair"></ion-icon>
+                        <div class="btn-text">维修任务</div>
+                    </div>
+                </ion-button>
+            </ion-row>
+            <ion-row>
+                <ion-button class="item" (click)="nav.navigateForward('/home/terminal')">
+                    <div>
+                        <ion-badge id="offline" style="position: absolute; right: 6px; top: 5px; border-radius: 10px; --background: #FF3300; z-index: 1; padding-top: 4px; padding-left: 7px; padding-right: 7px;"></ion-badge>
+                        <ion-icon name="terminal"></ion-icon>
+                        <div class="btn-text">终端监测</div>
+                    </div>
+                </ion-button>
+                <ion-button class="item right" (click)="nav.navigateForward('/home/immediate')">
+                    <div>
+                        <ion-icon name="report"></ion-icon>
+                        <div class="btn-text">即时上报</div>
+                    </div>
+                </ion-button>
+            </ion-row>
+            <ion-row>
+                <ion-button class="item" (click)="logout()">
+                    <div>
+                        <ion-icon name="logout"></ion-icon>
+                        <div class="btn-text">退出登录</div>
+                    </div>
+                </ion-button>
+            </ion-row>
+        </div>
+    </div>
+</ion-content>

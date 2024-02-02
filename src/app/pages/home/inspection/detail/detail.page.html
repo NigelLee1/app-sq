@@ -1,0 +1,120 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="nav.back()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+            <div>任务详情</div>
+            <div class="subtext">{{taskInfo.pcbh}}</div>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="showSelectLayer($event)">
+                <ion-icon name="logo-buffer"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <app-map showFullScreen="true" (mapInitialized)="mapInitialized($event)" [isSatellite]="isSatellite" (fullScreenChange)="fullScreenChange($event)" [isFullScreen]="isFullScreen"></app-map>
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="padding-bottom: 4px">
+        <ion-button *ngIf="taskInfo.formCount > 0" color="secondary" (click)="formQuery()">巡查记录</ion-button>
+        <ion-button *ngIf="taskInfo.zt === 0 && taskInfo.editable" color="success" (click)="createForm()">新建记录</ion-button>
+        <ion-item hidden>
+            <ion-label>请选择设施类型</ion-label>
+            <ion-select #select cancelText="取消" okText="确定" (ionChange)="createReport()">
+                <ion-select-option *ngFor="let item of facilityList" [value]="item.value">{{item.label}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-button *ngIf="taskInfo.zt === 0 && taskInfo.editable" color="warning" (click)="showReceiver()">转发任务</ion-button>
+        <ion-item hidden>
+            <ion-label>请选择接收人</ion-label>
+            <ion-select #receiveSelect cancelText="取消" okText="确定" (ionChange)="submitReceiver()">
+                <ion-select-option *ngFor="let item of receiveList" [value]="item.id">{{item.realName}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-fab>
+</ion-content>
+<ion-footer [hidden]="isFullScreen">
+    <ion-grid style="padding: 0">
+        <ion-row class="date">
+            <ion-col class="time">
+                <span class="label">发布时间：</span> {{ taskInfo.zdsj| date: 'yyyy-MM-dd' }}
+            </ion-col>
+            <ion-col class="time">
+                <span class="label">完成时间：</span>
+                <span [ngStyle]="{color: mapToolService.isPassed(taskInfo.wcsj) ? 'red' : '#3880ff'}">
+                    {{ taskInfo.wcsj| date: 'yyyy-MM-dd' }}
+                </span>
+            </ion-col>
+        </ion-row>
+        <ion-row class="segment">
+            <ion-segment [(ngModel)]="tabVal" (ngModelChange)="fullScreenChange(false)">
+                <ion-segment-button value="patrolRoute">
+                    <ion-label>巡查路线</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="facility">
+                    <ion-label>待检设施</ion-label>
+                </ion-segment-button>
+                <ion-segment-button *ngIf="taskInfo.formCount > 0" value="taskList">
+                    <ion-label>巡查记录</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </ion-row>
+        <ion-row class="list-content">
+            <ion-col size="12" *ngIf="tabVal === 'patrolRoute'">
+                <ion-list>
+                    <ion-item *ngFor="let item of patrolRoute; let i=index" button="true" (click)="markRoute(item)">
+                        <ion-avatar>
+                            <img src="assets/icon/line.svg">
+                        </ion-avatar>
+                        <ion-label>巡查路线：{{ i + 1 }}</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" *ngIf="tabVal === 'facility'">
+                <ion-list class="task-list">
+                    <ng-container *ngIf="!showFinishBtn">
+                        <ion-item *ngFor="let item of facilities" button="true" (click)="markRoute(item)">
+                            <ion-avatar class="bug">
+                                <img src="assets/icon/bug.svg">
+                            </ion-avatar>
+                            <ion-label>{{ item.ssbh }}（{{ item.sslc }}）</ion-label>
+                            <ion-badge *ngIf="item.editable">
+                                <ion-button color="secondary" (click)="createReport(item); $event.stopPropagation()">
+                                    <ion-icon name="write"></ion-icon>
+                                </ion-button>
+                            </ion-badge>
+                        </ion-item>
+                    </ng-container>
+                    <ion-item *ngIf="showFinishBtn">
+                        <div class="empty" [ngStyle]="{height: '120px'}">
+                            <img src="/assets/icon/full_finish.svg" style="width: 50px; height: 50px"/>
+                            设施巡查完毕，请点击<ion-button color="success" style="margin-top: -6px; margin-left: 5px" (click)="completeTask()">结束任务</ion-button>
+                        </div>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" *ngIf="tabVal === 'taskList'">
+                <ion-list class="task-list">
+                    <ion-item *ngFor="let item of recordList; let i=index" button="true" (click)="markRoute(item)" style="padding-right: 0">
+                        <ion-avatar class="bug">
+                            <img src="assets/icon/record.svg">
+                        </ion-avatar>
+                        <ion-label>
+                            {{i + 1}}.{{item.sslx}}（{{ item.ssbm }}）
+                            <br>
+                            记录时间：{{item.tjsj| date: 'yyyy-MM-dd HH:mm:ss'}}
+                        </ion-label>
+                        <ion-badge>
+                            <ion-button color="secondary" (click)="createReport(item);">
+                                <ion-icon [name]="taskInfo.editable && taskInfo.zt === 0? 'write' : 'view'" style="color: white;"></ion-icon>
+                            </ion-button>
+                        </ion-badge>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

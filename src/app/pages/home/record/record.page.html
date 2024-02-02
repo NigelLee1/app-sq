@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home/terminal">
+        <ion-icon name="arrow-back" style="color: white"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-left">{{name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div #linechart class="echart" (click)="synchroTable($event)"></div>
+  <div class="empty" style="margin-top: 5rem;" *ngIf="series.length === 0">
+    <img src="/assets/icon/no-data.svg"/>
+    <div>暂无数据</div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-item>
+    <ion-label position="floating">开始日期</ion-label>
+    <ion-datetime displayFormat="YYYY-MM-DD" min="2019-01-01" [(ngModel)]="start" cancelText="取消" doneText="确定" (ngModelChange)="query()"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">结束日期</ion-label>
+    <ion-datetime displayFormat="YYYY-MM-DD" min="2019-01-01" [(ngModel)]="end"  cancelText="取消" doneText="确定" (ngModelChange)="query()"></ion-datetime>
+  </ion-item>
+</ion-footer>

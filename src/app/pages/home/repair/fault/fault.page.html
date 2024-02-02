@@ -1,0 +1,87 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="modalCtrl.dismiss()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+            维修详情
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-segment [(ngModel)]="tab">
+        <ion-segment-button value="detail">
+            <ion-label>故障明细</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="report">
+            <ion-label>维修报告</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-header>
+
+<ion-content>
+    <app-facility [hidden]="tab !== 'detail'" [rcId]="rcId" hideHead="true" (facilityLoaded)="facilityLoaded($event)"></app-facility>
+    <ion-row [hidden]="tab !== 'report'">
+        <ion-col size="12" style="border-bottom: 1px #a2a4ab solid; background: #f4f5f8;">
+            <ion-text color="primary">
+                <h4 style="margin-bottom: 0">{{fault.fault}}</h4>
+            </ion-text>
+            <ion-text color="secondary">
+                <h6>{{fault.sType}}</h6>
+            </ion-text>
+        </ion-col>
+        <form [formGroup]="reportForm" novalidate style="text-align: center;">
+            <ion-item>
+                <ion-label>维修记录:</ion-label>
+                <ion-textarea placeholder="请输入维修记录" rows="4" formControlName="description" [readonly]="isView"></ion-textarea>
+            </ion-item>
+            <ion-item>
+                <ion-label position="fixed">现场照片:</ion-label>
+                <ion-col>
+                    <span *ngFor="let img of images; let i = index">
+                        <ion-button class="pic" color="light" (click)="photoViewer.show(img.url)">
+                            <div class="upload" *ngIf="img.status !== 0">
+                                <ion-spinner *ngIf="img.status === 1" name="circles"></ion-spinner>
+                                <ion-icon *ngIf="img.status === 2" name="alert"></ion-icon>
+                            </div>
+                            <ion-img [src]="img.url"></ion-img>
+                        </ion-button>
+                        <ion-icon *ngIf="!isView" name="close-circle" class="close" (click)="images.splice(i, 1)"></ion-icon>
+                    </span>
+                    <ion-button *ngIf="!isView" class="add" color="light" (click)="chooseSource(camera.MediaType.PICTURE)">
+                        <ion-icon name="add"></ion-icon>
+                    </ion-button>
+                    <div *ngIf="isView && images.length === 0" class="ion-text-left">无</div>
+                </ion-col>
+            </ion-item>
+            <ion-item>
+                <ion-label position="fixed">现场视频:</ion-label>
+                <ion-col class="ion-text-center video">
+                    <div *ngFor="let video of videos; let i = index" style="width: 100%; height: 100%; position: relative; margin-top: 10px" >
+                        <ion-spinner *ngIf="video.status === 1" name="circles"></ion-spinner>
+                        <ion-icon *ngIf="video.status === 2" name="alert" class="warn"></ion-icon>
+                        <video controls="controls">
+                            <source *ngIf="video.url" src="{{video.url}}"/>
+                        </video>
+                        <ion-icon *ngIf="!isView" name="close-circle" class="video-close" (click)="videos.splice(i, 1)"></ion-icon>
+                    </div>
+                    <ion-button *ngIf="!isView"  class="add" color="light" (click)="chooseSource(camera.MediaType.VIDEO)">
+                        <ion-icon name="add"></ion-icon>
+                    </ion-button>
+                    <div *ngIf="isView && videos.length === 0" class="ion-text-left">无</div>
+                </ion-col>
+            </ion-item>
+            <ion-item *ngIf="!isView">
+                <ion-label position="fixed">是否已维修:</ion-label>
+                <ion-toggle formControlName="iscom"></ion-toggle>
+            </ion-item>
+
+            <ion-button *ngIf="!isView" class="sub-btn" (click)="saveRepairTaskDec(reportForm.value)">保&nbsp;&nbsp;&nbsp;&nbsp;存</ion-button>
+        </form>
+    </ion-row>
+</ion-content>

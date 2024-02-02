@@ -1,0 +1,38 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="navController.navigateBack('/home')">
+                <ion-icon name="arrow-back" style="color: white"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">巡查任务</ion-title>
+        <ion-buttons slot="end">
+            <ion-button disabled>
+                <ion-icon></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-segment (ionChange)="segmentChange($event)" [value]="segment">
+        <ion-segment-button value="unfinished">
+            <ion-label>未完成</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="finish">
+            <ion-label>已完成</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-header>
+
+<ion-content>
+    <app-unfinished [hidden]="segment !== 'unfinished'"></app-unfinished>
+    <app-finish [hidden]="segment !== 'finish'"></app-finish>
+<!--    <ion-tabs>-->
+<!--        <ion-tab-bar slot="top">-->
+<!--            <ion-tab-button tab="unfinished">-->
+<!--                <ion-label>未完成</ion-label>-->
+<!--            </ion-tab-button>-->
+<!--            <ion-tab-button tab="finish">-->
+<!--                <ion-label>已完成</ion-label>-->
+<!--            </ion-tab-button>-->
+<!--        </ion-tab-bar>-->
+<!--    </ion-tabs>-->
+</ion-content>

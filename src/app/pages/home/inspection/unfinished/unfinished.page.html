@@ -1,0 +1,37 @@
+<ion-content class="unfinished">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingText="下拉即可刷新" refreshingText="正在刷新">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-content>
+        <ion-list>
+            <ion-item *ngFor="let item of taskList" button="true" (click)="navController.navigateForward('/home/task/detail/' + item.id)"
+                      style="--inner-padding-end: 5px; --padding-start: 5px">
+                <ion-avatar>
+                    <img src="/assets/icon/task.svg">
+                </ion-avatar>
+                <ion-label>
+                    {{item.pcbh}}<br>
+                    接收时间: {{item.receiveTime| date: 'yyyy-MM-dd'}}
+                </ion-label>
+                <ion-badge *ngIf="!item.att" color="primary" style="margin-right: 5px">未读</ion-badge>
+                <ion-badge *ngIf="item.att && item.editable && item.unDo === 0" style="--background: white;">
+                    <ion-button color="success" (click)="completeTask(item); $event.stopPropagation();">结束任务</ion-button>
+                </ion-badge>
+            </ion-item>
+            <ion-item *ngIf="taskList.length === 0">
+                <div class="empty">
+                    <img src="/assets/icon/no-data.svg"/>
+                    <div>暂无数据</div>
+                </div>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+            <ion-infinite-scroll-content
+                    loadingSpinner="bubbles"
+                    loadingText="数据加载中...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+        <div style="height: 4.5rem"></div>
+    </ion-content>
+</ion-content>

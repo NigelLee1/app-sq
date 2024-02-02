@@ -1,0 +1,96 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="navCtrl.navigateBack('/home')">
+                <ion-icon name="arrow-back" style="color: white"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">终端监测</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="showSelectLayer($event)">
+                <ion-icon name="logo-buffer"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background: white;">
+    <app-map showFullScreen="false" isContentFooter="true" (mapInitialized)="mapInitialized($event)" [isSatellite]="isSatellite"
+             (fullScreenChange)="fullScreenChange($event)" [isFullScreen]="isFullScreen"></app-map>
+    <ion-row style="background: white; max-height: 50%; overflow: auto;">
+        <ion-segment *ngIf="types.length > 0" (ionChange)="segmentChanged($event)" scrollable="true"
+                     style="border-bottom: 1px solid #86888f;" [value]="tabVal">
+            <ion-segment-button *ngFor="let item of types" [value]="item.typeName">
+                <ion-label>{{item.typeName}}</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+        <ion-row *ngFor="let item of types">
+            <ion-list *ngIf="item.typeName === tabVal" style="padding-top: 0">
+                <ion-item *ngFor="let device of item.list" (click)="showInformation(device)" [ngStyle]="{color: getColor(device, 0)}">
+                    <ion-avatar slot="start" style="display: inline-block; overflow: hidden;">
+                        <img src="http://sq.akest.cn/assets/icon/{{device.icon}}.svg" [ngStyle]="{filter: getColor(device, 1)}"
+                             style="width: 32px; height: 32px; position: relative; left: -28px; ">
+                    </ion-avatar>
+                    <ion-label style="font-size: .9rem;">
+                        <div>{{device.name}}</div>
+                        <div style="margin-top: 5px;">{{device.msg}}</div>
+                        <div style="margin-top: 5px;">{{ getTimeDesc(device) }}</div>
+                    </ion-label>
+                </ion-item>
+                <div class="empty" style="margin-top: 5rem;" *ngIf="item.list.length === 0">
+                    <img src="/assets/icon/no-data.svg"/>
+                    <div>暂无数据</div>
+                </div>
+            </ion-list>
+        </ion-row>
+        <div *ngIf="types.length === 0" style="width: 100%;">
+            <div class="ion-padding custom-skeleton" style="width: 100%;">
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                <ion-skeleton-text animated></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </div>
+            <div class="ion-padding custom-skeleton" style="width: 100%;">
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                <ion-skeleton-text animated></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </div>
+        </div>
+    </ion-row>
+</ion-content>
+
+<!--<ion-footer [hidden]="isFullScreen" style="">-->
+<!--    <ion-segment (ionChange)="segmentChanged($event)" scrollable="true"-->
+<!--                 style="border-bottom: 1px solid #86888f;" [value]="tabVal">-->
+<!--        <ion-segment-button *ngFor="let item of types" [value]="item.tab">-->
+<!--            <ion-label>{{item.tab}}</ion-label>-->
+<!--        </ion-segment-button>-->
+<!--    </ion-segment>-->
+<!--    <ion-row *ngFor="let item of types" [hidden]="tabVal !== item.tab">-->
+<!--        <ion-list style="max-height: 15rem; overflow: auto;">-->
+<!--            <ion-item *ngFor="let item of item.list" (click)="showInformation(item)">-->
+<!--                <ion-avatar slot="start">-->
+<!--                    <img [src]="item.icon" style="width: 32px; height: 32px;">-->
+<!--                </ion-avatar>-->
+<!--                <ion-label style="font-size: .9rem;">-->
+<!--                    <div>{{item.name}}</div>-->
+<!--                    <div *ngIf="(item.jclx === '水质仪' || item.jclx === '液位计') && item.color !== '#707070'" style="margin-top: 5px;" [ngStyle]="{'color': item.color}">{{item.state}}</div>-->
+<!--                    <div *ngIf="item.jclx === '雨量站' && item.color !== '#707070'" style="margin-top: 5px;" [ngStyle]="{'color': item.color}">小时雨量(mm/h)：{{item.hourrf}}</div>-->
+<!--                    <div *ngIf="item.jclx === '温度计' && item.color !== '#707070'" style="margin-top: 5px;" [ngStyle]="{'color': item.color}">温度：{{item.temperature}}</div>-->
+<!--                    <ion-row *ngIf="item.jclx === '分布式液位水质仪' && item.color !== '#707070'" style="margin-top: 5px;" [ngStyle]="{'color': item.color}">-->
+<!--                        <ion-col size="6" style="margin: 0; padding: 0;">总液位：{{item.y00000Rtd}}</ion-col>-->
+<!--                        <ion-col size="6" style="margin: 0; padding: 0;">电压{{item.dcNormal ? '' : '过低'}}：{{item.dc0000Rtd}}</ion-col>-->
+<!--                    </ion-row>-->
+<!--                    <ion-row *ngIf="item.jclx === '多参数水质仪' && item.color !== '#707070'" style="margin-top: 5px;" [ngStyle]="{'color': item.color}">-->
+<!--                        <ion-col size="6" style="margin: 0; padding: 0;">PH：{{item.w01001Rtd}}</ion-col>-->
+<!--                        <ion-col size="6" style="margin: 0; padding: 0;">电压：{{item.dc0000Rtd}}</ion-col>-->
+<!--                    </ion-row>-->
+<!--                    <div *ngIf="item.color === '#707070'" style="margin-top: 5px;" [ngStyle]="{'color': item.color}">离线&nbsp;&nbsp;&nbsp;最新时间：{{item.xDatatime| date: 'yyyy-MM-dd HH:mm:ss'}}</div>-->
+<!--                </ion-label>-->
+<!--            </ion-item>-->
+<!--        </ion-list>-->
+<!--    </ion-row>-->
+<!--</ion-footer>-->

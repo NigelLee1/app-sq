@@ -1,0 +1,35 @@
+ion-toolbar {
+  --color: white;
+  --background: rgba(0,0,0,0);
+  --background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-header {
+  padding-top: 1rem;
+  background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-title {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+ion-button {
+  font-size: 1.2rem;
+}
+
+ion-list {
+  width: 100%;
+}
+
+ion-icon {
+  color: white;
+}
+
+.ios ion-label {
+  padding: 0 1rem;
+}
+
+ion-row {
+  width: 100%;
+}

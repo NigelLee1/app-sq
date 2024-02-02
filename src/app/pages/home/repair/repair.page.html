@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="navController.navigateBack('/home')">
+        <ion-icon name="arrow-back" style="color: white"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">维修任务</ion-title>
+    <ion-buttons slot="end">
+      <ion-button disabled>
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-segment (ionChange)="segmentChange($event)" [value]="segment">
+    <ion-segment-button value="notRepaired">
+      <ion-label>未解决</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="repaired">
+      <ion-label>已解决</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <app-not-repaired [hidden]="segment !== 'notRepaired'"></app-not-repaired>
+  <app-repaired [hidden]="segment !== 'repaired'"></app-repaired>
+<!--  <app-repair [hidden]="segment !== 'repaired'"></app-repair>-->
+<!--  <ion-tabs>-->
+<!--    <ion-tab-bar slot="top">-->
+<!--      <ion-tab-button tab="notRepaired">-->
+<!--        <ion-label>未解决</ion-label>-->
+<!--      </ion-tab-button>-->
+<!--      <ion-tab-button tab="repaired">-->
+<!--        <ion-label>已解决</ion-label>-->
+<!--      </ion-tab-button>-->
+<!--    </ion-tab-bar>-->
+<!--  </ion-tabs>-->
+</ion-content>

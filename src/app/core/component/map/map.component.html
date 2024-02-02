@@ -1,0 +1,10 @@
+<div #mapDiv class="map" [ngStyle]="{height: isContentFooter ? (isFullScreen ? '100%' : '50%') : ''}">
+    <ion-fab class="map-location" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button size="small" color="light" (click)="location()">
+            <ion-icon [name]="locating ? 'loading' : 'locate'" [ngClass]="{'loader': locating}"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button *ngIf="showFullScreen" size="small" color="light" (click)="setFullScreen()">
+            <ion-icon [name]="!isFullScreen ? 'full-screen' : 'small-screen'"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</div>

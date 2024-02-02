@@ -1,0 +1,39 @@
+ion-toolbar {
+  --color: white;
+  --background: rgba(0,0,0,0);
+  --background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-header {
+  padding-top: 1rem;
+  background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-title {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+ion-button {
+  font-size: 1.2rem;
+}
+
+.echart{
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  vertical-align:middle;
+}
+
+.chart {
+  min-width: 320px;
+  max-width: 800px;
+  height: 220px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.ios ion-title {
+  text-align: center !important;
+}

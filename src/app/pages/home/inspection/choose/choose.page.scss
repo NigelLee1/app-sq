@@ -1,0 +1,50 @@
+ion-toolbar {
+  --padding-top: 1.8rem;
+  --padding-bottom: .5rem;
+  --color: white;
+  --background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+.ios ion-toolbar {
+  --padding-top: 1.9rem;
+  --padding-bottom: .2rem;
+}
+
+ion-header {
+  background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+ion-title {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+.ios ion-title {
+  padding-top: 1.6rem;
+}
+
+ion-button {
+  font-size: 1.2rem;
+}
+
+ion-icon {
+  color: white;
+}
+
+.submit {
+  width: calc(100vw - 24px);
+  --background: -webkit-linear-gradient(90deg, #86D1FC 0%, #97C0FF 100%);
+}
+
+.rang {
+  --border-radius: 25px;
+  font-size: .8rem;
+}
+
+.mark {
+  width: 40px;
+  height: 40px;
+  color: red;
+  margin-left: 8px;
+  margin-top: -8px
+}

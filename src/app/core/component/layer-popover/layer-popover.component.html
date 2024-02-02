@@ -1,0 +1,33 @@
+<ion-content style="overflow: auto">
+    <ion-card>
+        <ion-card-header>
+            <ion-row>
+                <ion-col class="ion-text-center">
+                    <ion-button [fill]="!isSatellite ? 'outline' : 'solid'" (click)="isSatelliteChange(false)">
+                        <ion-img src="assets/icon/normal.png"></ion-img>
+                    </ion-button>
+                    <p>地图</p>
+                </ion-col>
+                <ion-col class="ion-text-center">
+                    <ion-button [fill]="isSatellite ? 'outline' : 'solid'" (click)="isSatelliteChange(true)">
+                        <ion-img src="assets/icon/satellite.png"></ion-img>
+                    </ion-button>
+                    <p>影像</p>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+        <ion-item-divider></ion-item-divider>
+        <ion-card-content>
+            <ion-item>
+                <ion-label style="color: #97C0FF">{{ allChecked ? '取消全选' : '全选' }}</ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="allChecked" [indeterminate]="someChecked" (click)="allCheckedChange(!allChecked)"></ion-checkbox>
+            </ion-item>
+            <ion-list>
+                <ion-item *ngFor="let layer of gisLayers">
+                    <ion-label>{{layer.title}}</ion-label>
+                    <ion-checkbox slot="end" [(ngModel)]="layer.select" (click)="layerClick()"></ion-checkbox>
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

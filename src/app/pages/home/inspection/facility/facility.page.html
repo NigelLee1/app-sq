@@ -1,0 +1,200 @@
+<ion-header *ngIf="!hideHead">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="isModal ? modalController.dismiss() : back()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+            {{title}}
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button *ngIf="editable" (click)="submitTask(taskForm.value)">
+                <ion-icon name="save"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="!editable" (click)="submitTask(taskForm.value)">
+                <ion-icon></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form [formGroup]="taskForm" novalidate>
+        <ion-item *ngIf="taskForm.controls.type.value !== '其它'">
+            <ion-label>{{taskForm.controls.type.value}}{{['水厂', '河涌'].indexOf(taskForm.controls.type.value) !== -1 ? '名称:' : '编号:'}}</ion-label>
+            <ion-input [placeholder]="'请输入' + taskForm.controls.type.value + (['水厂', '河涌'].indexOf(taskForm.controls.type.value) !== -1 ? '名称' : '编号')" formControlName="code" [readonly]="!canChangeCode || !editable"></ion-input>
+            <ion-text *ngIf="taskForm.controls.code.hasError('required') && taskForm.controls.code.touched"
+                      color="danger">必填
+            </ion-text>
+            <ion-chip *ngIf="canChangeCode && ['水厂', '河涌'].indexOf(taskForm.controls.type.value) === -1" color="success" (click)="changeLocate('change')">
+                <ion-label>获取</ion-label>
+            </ion-chip>
+        </ion-item>
+        <ion-item>
+            <ion-label>坐标:</ion-label>
+            <ion-input placeholder="点击获取当前定位" formControlName="coordinateStr" readonly></ion-input>
+            <ion-text *ngIf="taskForm.controls.coordinateStr.hasError('required') && taskForm.controls.coordinateStr.touched"
+                      color="danger">必填
+            </ion-text>
+            <ion-buttons *ngIf="editable">
+                <ion-button (click)="locate()">
+                    <ion-icon slot="icon-only" style="color: #a2a4ab" [name]="locating ? 'loading' : 'locate'"
+                              [ngClass]="{'loader': locating}"></ion-icon>
+                </ion-button>
+                <ion-chip color="warning" (click)="changeLocate('locate')">
+                    <ion-label>调整</ion-label>
+                </ion-chip>
+            </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="['检查井', '排放口', '拍门', '渠箱', '圆管', '闸门'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>属性:</ion-label>
+            <ion-select placeholder="请选择属性" interface="popover" formControlName="attribute">
+                <ion-select-option value="雨水" [disabled]="!editable">雨水</ion-select-option>
+                <ion-select-option value="污水" [disabled]="!editable">污水</ion-select-option>
+                <ion-select-option value="合流" [disabled]="!editable">合流</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['排放口', '拍门', '渠箱', '圆管', '河涌', '闸门'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>存在问题:</ion-label>
+            <ion-select placeholder="请选择存在问题" formControlName="existingProblems" interface="popover" multiple="true"
+                        okText="确定" cancelText="取消">
+                <ion-select-option *ngFor="let item of existProblemList" [value]="item.value" [disabled]="!editable">{{item.label}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['排放口'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>溢流时间:</ion-label>
+            <ion-datetime placeholder="请选择溢流时间" formControlName="overflowTime" displayFormat="YYYY-MM-DD HH:mm" [readonly]="!editable"
+                          pickerFormat="YYYY MM DD HH mm"
+                          [max]="maxDate" doneText="确定" cancelText="取消" style="--placeholder-color: #d7d8da"></ion-datetime>
+        </ion-item>
+        <ion-item *ngIf="['拍门'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>漏水时间:</ion-label>
+            <ion-datetime placeholder="请选择漏水时间" formControlName="leakageTime" displayFormat="YYYY-MM-DD HH:mm"
+                          pickerFormat="YYYY MM DD HH mm" style="--placeholder-color: #d7d8da"
+                          [max]="maxDate" doneText="确定" cancelText="取消"></ion-datetime>
+        </ion-item>
+        <ion-item *ngIf="['拍门'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>漏水量:</ion-label>
+            <ion-select placeholder="请选择漏水量" formControlName="leakageRate" interface="popover">
+                <ion-select-option value="大">大</ion-select-option>
+                <ion-select-option value="一般">一般</ion-select-option>
+                <ion-select-option value="小">小</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['拍门'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>倒灌时间:</ion-label>
+            <ion-datetime placeholder="请选择倒灌时间" formControlName="flowBackwardTime" displayFormat="YYYY-MM-DD HH:mm"
+                          pickerFormat="YYYY MM DD HH mm" style="--placeholder-color: #d7d8da"
+                          [max]="maxDate" doneText="确定" cancelText="取消"></ion-datetime>
+        </ion-item>
+        <ion-item *ngIf="['拍门'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>倒灌量:</ion-label>
+            <ion-select placeholder="请选择倒灌量" formControlName="flowBackwardRate" interface="popover">
+                <ion-select-option value="大">大</ion-select-option>
+                <ion-select-option value="一般">一般</ion-select-option>
+                <ion-select-option value="小">小</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['检查井'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>井盖状况:</ion-label>
+            <ion-select [placeholder]="editable ? '请选择井盖状况' : '无'" formControlName="drainCover" interface="popover" multiple="true"
+                        okText="确定" cancelText="取消">
+                <ion-select-option *ngFor="let item of drainCoverList" [value]="item.value" [disabled]="!editable">{{item.label}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['雨水口'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>雨水箅状况:</ion-label>
+            <ion-select [placeholder]="editable ? '请选择雨水箅状况' : '无'" formControlName="rainWaterGrate" interface="popover" multiple="true"
+                        okText="确定" cancelText="取消">
+                <ion-select-option *ngFor="let item of rainWaterGrateList" [value]="item.value" [disabled]="!editable">{{item.label}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['排放口'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>溢流量:</ion-label>
+            <ion-select placeholder="请选择溢流量" formControlName="overflow" interface="popover">
+                <ion-select-option [value]="0" [disabled]="!editable">0%</ion-select-option>
+                <ion-select-option [value]="25" [disabled]="!editable">25%</ion-select-option>
+                <ion-select-option [value]="50" [disabled]="!editable">50%</ion-select-option>
+                <ion-select-option [value]="75" [disabled]="!editable">75%</ion-select-option>
+                <ion-select-option [value]="100" [disabled]="!editable">100%</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['检查井', '雨水口'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>井内状况:</ion-label>
+            <ion-select [placeholder]="editable ? '请选择井内状况' : '无'" formControlName="wellCondition" interface="popover" multiple="true"
+                        okText="确定" cancelText="取消">
+                <ion-select-option *ngFor="let item of wellConditionList" [value]="item.value" [disabled]="!editable">{{item.label}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['检查井', '雨水口', '渠箱', '圆管'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>淤积深度:</ion-label>
+            <ion-select placeholder="请选择淤积深度" formControlName="deposition" interface="popover">
+                <ion-select-option [value]="0" [disabled]="!editable">0%</ion-select-option>
+                <ion-select-option [value]="25" [disabled]="!editable">25%</ion-select-option>
+                <ion-select-option [value]="50" [disabled]="!editable">50%</ion-select-option>
+                <ion-select-option [value]="75" [disabled]="!editable">75%</ion-select-option>
+                <ion-select-option [value]="100" [disabled]="!editable">100%</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['检查井', '渠箱', '圆管'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>水位状况:</ion-label>
+            <ion-select placeholder="请选择水位状况" formControlName="waterLevel" interface="popover">
+                <ion-select-option [value]="0" [disabled]="!editable">0%</ion-select-option>
+                <ion-select-option [value]="25" [disabled]="!editable">25%</ion-select-option>
+                <ion-select-option [value]="50" [disabled]="!editable">50%</ion-select-option>
+                <ion-select-option [value]="75" [disabled]="!editable">75%</ion-select-option>
+                <ion-select-option [value]="100" [disabled]="!editable">100%</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="['检查井', '渠箱', '排放口', '圆管'].indexOf(taskForm.controls.type.value) !== -1">
+            <ion-label>{{taskForm.controls.type.value === '排放口' ? '溢流水质' : '水质状况'}}:</ion-label>
+            <ion-select placeholder="请选择{{taskForm.controls.type.value === '排放口' ? '溢流水质' : '水质状况'}}"
+                        formControlName="waterQuality" interface="popover">
+                <ion-select-option [value]="0" [disabled]="!editable">黑臭</ion-select-option>
+                <ion-select-option [value]="1" [disabled]="!editable">清澈</ion-select-option>
+                <ion-select-option [value]="2" [disabled]="!editable">一般</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{taskForm.controls.type.value === '其它' ? '问题描述' : '备注'}}:</ion-label>
+            <ion-textarea [placeholder]="editable ? ('请输入' + (taskForm.controls.type.value === '其它' ? '问题描述' : '备注')) : '无'" rows="4" formControlName="description" [readonly]="!editable"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label position="fixed">现场照片:</ion-label>
+            <ion-col>
+                <span *ngFor="let img of images; let i = index">
+                    <ion-button class="pic" color="light" (click)="photoViewer.show(img.url)">
+                        <div class="upload" *ngIf="img.status !== 0">
+                            <ion-spinner *ngIf="img.status === 1" name="circles"></ion-spinner>
+                            <ion-icon *ngIf="img.status === 2" name="alert"></ion-icon>
+                        </div>
+                        <ion-img [src]="img.url"></ion-img>
+                    </ion-button>
+                    <ion-icon *ngIf="editable" name="close-circle" class="close" (click)="images.splice(i, 1)"></ion-icon>
+                </span>
+                <ion-button *ngIf="editable" class="add" color="light" (click)="chooseSource(camera.MediaType.PICTURE)">
+                    <ion-icon name="add"></ion-icon>
+                </ion-button>
+                <div *ngIf="!editable &&  images.length === 0" class="ion-text-left">无</div>
+            </ion-col>
+        </ion-item>
+        <ion-item>
+            <ion-label position="fixed">现场视频:</ion-label>
+            <ion-col class="ion-text-center video">
+                <div *ngFor="let video of videos; let i = index" style="width: 100%; height: 100%; position: relative; margin-top: 10px" >
+                    <ion-spinner *ngIf="video.status === 1" name="circles"></ion-spinner>
+                    <ion-icon *ngIf="video.status === 2" name="alert" class="warn"></ion-icon>
+                    <video controls="controls">
+                        <source *ngIf="video.url" src="{{video.url}}"/>
+                    </video>
+                    <ion-icon *ngIf="editable" name="close-circle" class="video-close" (click)="videos.splice(i, 1)"></ion-icon>
+                </div>
+                <ion-button *ngIf="editable" class="add" color="light" (click)="chooseSource(camera.MediaType.VIDEO)">
+                    <ion-icon name="add"></ion-icon>
+                </ion-button>
+                <div *ngIf="!editable &&  videos.length === 0" class="ion-text-left">无</div>
+            </ion-col>
+        </ion-item>
+    </form>
+</ion-content>

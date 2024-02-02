@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="navController.navigateBack('/home')">
+        <ion-icon name="arrow-back" style="color: white"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">即时上报</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showSelectLayer($event)">
+        <ion-icon name="logo-buffer"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-map showFullScreen="true" (mapInitialized)="mapInitialized($event)" [isSatellite]="isSatellite"
+           (fullScreenChange)="fullScreenChange($event)" [isFullScreen]="isFullScreen"></app-map>
+  <ion-item hidden>
+    <ion-label>请选择设施类型</ion-label>
+    <ion-select #select cancelText="取消" okText="确定" (ionChange)="createReport()">
+      <ion-select-option *ngFor="let item of facilityList" [value]="item.value">{{item.label}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-content>
+
+<ion-footer *ngIf="!isFullScreen"  style="text-align: center;">
+  <ion-list style="max-height: 250px; overflow: auto;">
+    <ion-item *ngFor="let item of list"  (click)="markRoute(item)">
+      <ion-avatar slot="start" class="ion-no-padding">
+        <img src="assets/icon/bug.svg" style="width: 32px; height: 32px; margin-top: 5px;">
+      </ion-avatar>
+      <ion-label style="font-size: .9rem;">
+        <div>{{item.ssbm}}（{{item.sslx}}）</div>
+      </ion-label>
+      <ion-badge style="--background: white;">
+        <ion-button color="secondary" size="small" (click)="showDetail(item);" style="font-size: .8rem;">
+          <ion-icon [name]="'view'" style="color: white;"></ion-icon>
+        </ion-button>
+      </ion-badge>
+    </ion-item>
+  </ion-list>
+
+  <ion-col class="ion-text-center ion-no-padding">
+    <ion-button class="create-form" style="width: 98%;" color="secondary" (click)="createForm()">新建案件</ion-button>
+  </ion-col>
+</ion-footer>
